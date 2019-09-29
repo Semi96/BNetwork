@@ -1,0 +1,70 @@
+﻿@model UsersListViewModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<h2>List</h2>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color col-md-3">
+
+
+            <select name="userStatus"  asp-items="Html.GetEnumSelectList<UserStatus>()" class="form-control"></select>
+    </div>
+    <div class="form-actions no-color col-md-3">
+        <input type="submit" value="Search" class="btn btn-default" /> |
+        </p>
+    </div> <div class="form-actions no-color col-md-3">
+        <a asp-action="List">Back to Full List</a>
+    </div>
+</form>
+
+<table class="table">
+    
+    <tbody>
+        @foreach (var item in Model.Users) {
+        <tr>
+            <td>
+                @item.FirstName
+            </td>
+            <td>
+                @item.LastName
+            </td>
+            <td>
+                @item.Gender
+            </td>
+            <td>
+                @item.BirthDate
+            </td>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @item.UserName
+            </td>
+
+            <td>
+                @item.Email
+            </td>
+
+            <td>
+                @item.EmailConfirmed
+            </td>
+
+            <td>
+                @item.PhoneNumber
+            </td>
+
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<div page-model="@Model.PagingInfo" page-action="List"></div>
+

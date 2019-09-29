@@ -1,0 +1,71 @@
+﻿@model IEnumerable<BnetworkManagement.Models.MiningInventory>
+
+@{
+    ViewData["Title"] = "Batches";
+}
+
+<h2>Batches</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BatchId)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MiningStartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MiningEndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MHAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Currency)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BatchId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiningStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiningEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MHAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BatchId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BatchId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BatchId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

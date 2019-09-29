@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<html>
+<head>
+    <environment names="Production">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="~/css/layout.css" />
+        </environment>
+</head>
+<body style="padding-left:5em;">
+    
+
+    <h2>Manage your account</h2>
+
+    <div>
+        <h4>Change your account settings</h4>
+
+        <div class="row">
+            <div class="col-md-3">
+                @await Html.PartialAsync("_ManageNav")
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+
+    @section Scripts {
+
+
+
+        @RenderSection("Scripts", required: false)
+
+    }
+</body>
+</html>
+<style>
+  
+</style>

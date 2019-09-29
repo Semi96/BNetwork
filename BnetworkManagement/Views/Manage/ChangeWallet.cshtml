@@ -1,0 +1,79 @@
+﻿@model BnetworkManagement.Models.ManageViewModels.ChangeWalletViewModel
+
+@{
+    ViewData["Title"] = "ChangeWallet";
+    ViewData.AddActivePage(ManageNavPages.ChangeWallet);
+    
+
+}
+
+<h4>My Wallet</h4>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ChangeWallet">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (Model.DoesWalletExist != true)
+            {
+                <div class="form-group">
+                    <label asp-for="WalletKey" class="control-label">Public Key</label>
+                    <input asp-for="WalletKey" class="form-control" />
+                    <span asp-validation-for="WalletKey" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmWalletKey" class="control-label">Confirm Public Key</label>
+                    <input asp-for="ConfirmWalletKey" class="form-control" />
+                    <span asp-validation-for="ConfirmWalletKey" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Currency" class="control-label">Wallet Currency</label>
+                    <select name="Currency" asp-items="Html.GetEnumSelectList<Currencies>()" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="WalletKey" class="control-label">Public Key</label>
+                    <input asp-for="WalletKey" class="form-control" readonly />
+                    <span asp-validation-for="WalletKey" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Currency" class="control-label"></label>
+                    <input asp-for="Currency" class="form-control" readonly />
+                    <span asp-validation-for="Currency" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Request Change" onclick="requestChange()" class="btn btn-default" />
+                    @*<button type="button" class="btn btn-success btn-lg btn-block" id="changewallet">
+                            >Change Wallet<
+                        </button>*@
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+
+<script>
+
+    function requestChange() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SendVerificationEmail", "Manage")',
+            data: {hello: 1},
+                success: function (result) {
+
+                    alert("Wallet Change Request Accepted. Check your e-mail! ");
+
+                },
+                error: function (response) {
+                    alert("Transaction Unsuccesful, try again");
+                }
+            });
+    };
+
+</script>

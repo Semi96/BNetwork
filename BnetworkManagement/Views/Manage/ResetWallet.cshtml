@@ -1,0 +1,48 @@
+﻿@model BnetworkManagement.Models.ManageViewModels.ChangeWalletViewModel
+
+@{
+    ViewData["Title"] = "Reset Wallet";
+}
+
+<h4>Reset Wallet</h4>
+@*@Html.Partial("_StatusMessage", Model.StatusMessage)*@
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ResetWallet">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="WalletKey" class="control-label"></label>
+                <input asp-for="WalletKey" class="form-control" readonly />
+                <span asp-validation-for="WalletKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Currency" class="control-label"></label>
+                <input asp-for="Currency" class="form-control" readonly />
+                <span asp-validation-for="Currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewWalletKey" class="control-label"></label>
+                <input asp-for="NewWalletKey" class="form-control" />
+                <span asp-validation-for="NewWalletKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmWalletKey" class="control-label"></label>
+                <input asp-for="ConfirmWalletKey" class="form-control" />
+                <span asp-validation-for="ConfirmWalletKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewCurrency" class="control-label">New Wallet Currency</label>
+                <select name="New Currency" asp-items="Html.GetEnumSelectList<Currencies>()" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

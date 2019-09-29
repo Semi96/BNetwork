@@ -1,0 +1,8 @@
+﻿API:
+Name: 
+bnetregisterform
+Key: 
+
+Commands:
+dotnet user-secrets set SendGridUser 
+dotnet user-secrets set SendGridKey 

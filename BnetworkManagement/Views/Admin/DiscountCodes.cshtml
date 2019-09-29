@@ -1,0 +1,53 @@
+﻿@model IEnumerable<BnetworkManagement.Models.DiscountCode>
+
+@{
+    ViewData["Title"] = "DiscountCodes";
+}
+
+<h2>DiscountCodes</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DiscountType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DiscountAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NumTimesUsed)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumTimesUsed)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DiscountId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DiscountId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DiscountId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

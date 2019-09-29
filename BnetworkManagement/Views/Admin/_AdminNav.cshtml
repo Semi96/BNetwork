@@ -1,0 +1,15 @@
+﻿@using BnetworkManagement.Views.Admin
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+<ul class="nav nav-pills nav-stacked">
+    <li class="@AdminNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">Profile</a></li>
+    <li class="@AdminNavPages.RPCsNavClass(ViewContext)"><a asp-action="RPCs">Rental Contracts</a></li>
+    <li class="@AdminNavPages.BatchesNavClass(ViewContext)"><a asp-action="Batches">Batches</a></li>
+    <li class="@AdminNavPages.AvailableCapacityNavClass(ViewContext)"><a asp-action="AvailableCapacity">Available Capacity</a></li>
+    <li class="@AdminNavPages.AccountingNavClass(ViewContext)"><a asp-action="Accounting">Accounting</a></li>
+    <li class="@AdminNavPages.DiscountCodesNavClass(ViewContext)"><a asp-action="DiscountCodes">Discount Codes</a></li>
+</ul>
+

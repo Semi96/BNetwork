@@ -1,0 +1,451 @@
+﻿@model BnetworkManagement.Models.BusinessViewModels.MiningShopViewModel
+<environment names="Production">
+    <!-- Favicons
+        ================================================== -->
+    <link rel="shortcut icon" href="~/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="~/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/images/apple-touch-icon-114x114.png">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="~/css/PriceRangeSlider.css" />
+    <link rel="stylesheet" href="~/css/PricePackages.css" />
+
+    <script type="text/javascript" src="~/js/typed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
+
+
+
+    <script type="text/javascript" src="~/js/SmoothScroll.js"></script>
+
+    <!-- Bootstrap -->
+    <!-- Slider
+    ================================================== -->
+    <link href="~/css/owl.carousel.css" rel="stylesheet" media="screen">
+    <link href="~/css/owl.theme.css" rel="stylesheet" media="screen">
+
+    <!-- Stylesheet
+    ================================================== -->
+    <link rel="stylesheet" type="text/css" href="~/css/style.css">
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300" rel="stylesheet" type="text/css">
+
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+
+</environment>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BNetwork Mining</title>
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+</head>
+<body id="page-top" data-spy="scroll">
+
+
+    <input id='MegaHashPriceRate' type='hidden' value='@Model.MegaHashPriceRate' />
+    <input id='MineableCurrencies' type='hidden' value='@Model.MineableCurrencies' />
+    <input id='TotalMegaHashAvailable' type='hidden' value='@Model.TotalMegaHashAvailable' />
+    <input id='BlockTime' type='hidden' value='0' />
+    <input id='Difficulty' type='hidden' value='0' />
+
+    <input id='BlockReward' type='hidden' value='0' />
+    <input id='ETHPrice' type='hidden' value='0' />
+
+
+
+    <!-- Navigation
+        ==========================================-->
+    <!-- Header -->
+
+
+    <div id="adjust-right" style="margin-right:-1em ;    margin-left: -0.5em; ">
+
+        <header id="header" style="">
+
+            <div class="intro" style="height:auto; z-index:10;">
+
+                <div class="overlay" style="height:inherit">
+
+                    <video id="video" autoplay="autoplay" loop="loop" muted style="    position: relative; margin: auto;width: 100%; height: auto; z-index:0">
+                        <source src="~/images/red-fan-full.mp4" type="video/webm">
+
+
+                    </video>
+
+                    <div class="overlay">
+                        <div style=" width:100%;height:100%; background:url(/images/redgradient.jpg) ; opacity:0.7;filter:grayscale(100%);position:absolute;
+   margin:auto;
+   top:-0.5%;
+    z-index:1; "></div>
+                        <!-- words on header-->
+
+                        <div style=" width:50%;height:50%; background:rgba(255, 255, 255, 0) ;border-radius:10px; position:absolute;
+   margin:auto; left:23%;
+   top:20%;
+    z-index:100;">
+                            <h2 id="front-text" style="color:white; margin:auto; position:relative;top:10%; text-align:left ; font-size: 4vw; font-weight:600; letter-spacing: 0.8px; display:inline;"></h2>
+                            <h4 style="color:white; margin:auto; position:relative;top:10%; text-align:left ; font-size: 2.5vw; font-weight:300; ">Make your money work for you, even while you sleep</h4>
+                            <h3 id="animated-example" class="animated bounce fas fa-10x fa-arrow-alt-circle-down" style="color:white; margin:auto; position:relative;padding-top:30%; text-align:center ;left: 40%;  font-weight:100; font-size: 10vw "></h3>
+                        </div>
+
+                    </div>
+
+
+                    <!--    <div class="row">
+
+                                      <div style="background:url(/images/blackandwhitecircuitboard.jpg); width:50%;min-width:10em;height:auto; box-shadow: rgba(1,1,1,0.8) 0 0 10px 10px;border-radius:5px ;position:relative; margin:auto;top:-28em;  ">
+                                                 <span style="color:whitesmoke; text-shadow: 0 0 0.3em black;margin:auto;margin-left:0.5em; font-size:1.5em">Welcome to</span>
+                    <h1 style="color:whitesmoke; text-shadow: 0 0 0.3em black;margin-left:0.5em">BNetwork</h1>
+                                            <img src="~/images/bnetwork-white.png" style="margin: auto; position: relative; width:100%;height:auto;" />
+
+                                </div>
+
+
+
+                                </div>
+                                    </div> -->
+
+
+                </div>
+            </div>
+
+        </header>
+
+        <div id="blackstrip" style="height:6em; background:black; margin-bottom:8em; margin-top:-1em; z-index:200; opacity: 0.6; box-shadow: black 0 0 50px 10px">
+
+        </div>
+        <!-- About Section -->
+
+        <div id="about" style="height: 50em">
+
+            <div class="container" style="background:rgba(255, 255, 255, 0.85); width:90%;height:100%; box-shadow:rgba(255,255,255,0.85) 0 0 0px 5px;border-top-right-radius:5px; border-top-left-radius:5px ">
+                <div class="section-title text-center center" style="padding-top:2em">
+                    <h2>Mining Profitability Estimate</h2>
+                    <hr>
+                    <a href="#about" id="checkoutButton" class="btn btn-custom btn-lg page-scroll" style=" margin:auto; position:relative; border-radius:10px; font-size:large;"> Start Mining <span class="buy-mh">0</span> MH/s!</a>
+                    <p> <span style="color: rgb(204,0,0)">Current  <i class="glyphicon glyphicon-stats"></i></span>  | <span style="color: blue">  Realistic  <i class="glyphicon glyphicon-stats"></i></span>  |  <span style="color: green">  Optimistic  <i class="glyphicon glyphicon-stats"></i></span></p>
+                </div>
+                <div class="row">
+
+                    <div id="range-div">
+                        <canvas id="myChart" style="background-color:rgba(0, 0, 0, 0); height: 60% ;width:auto; margin:auto;position:relative"></canvas>
+                        <script src="~/js/Chart.js"></script>
+                        <script src="~/js/PriceRangeSlider.js"></script>
+                        <div class="range-holder" id="range">
+
+                            <div id="pr-slider" class="dragdealer">
+
+                                <div class="stripe">
+
+                                    <div class="handle">
+                                        <div class="infobox">
+                                            <div class="titlebar"><span id="plan-holder"></span> <span id="device-holder"></span></div>
+                                            <div class="innerbox">
+
+                                                <div class="info-price"></div>
+                                                <div class="annual-label"></div>
+                                                <div class="contract-price"></div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="square">
+
+                                            <img src="~/images/BNetwork-red-logo.png" alt="testimage" class="img-responsive" style=" width:5em;height:auto;  margin-right:0.5em" />
+
+                                            <span class="value"></span>
+                                            <span class="menu-line"></span>
+                                            <span class="menu-line"></span>
+                                            <span class="menu-line"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- PACKAGES section-->
+        <div id="buy-now" class="purchase" style="height: auto">
+
+            <div class="container" style="background:rgba(255,255,255, 0.85); width:90%;height:100%; box-shadow:rgba(255,255,255,0.85) 0 0 0px 5px; padding-top:15vw; padding-bottom:5em;">
+                <div class="section-title text-center center">
+                    <h2>Packages</h2>
+                    <hr>
+                    <h3>Purchase a custom amount from the slider above or select a package below:</h3>
+                </div>
+                <div class="row">
+
+                    <ul>
+                        <li>
+                            <a href="/Payment/Checkout?mh=10">
+                                <strong class="package-name">Basic</strong>
+                                <span class="purchase-description">10 MH/s </span>
+                                <span class="purchase-description">2-year contract </span>
+                                <span class="purchase-description">No service / maintenance fees</span>
+                                <span class="purchase-description">Payout every 24 hrs</span>
+                                <big class="purchase-price" id="price1">$1</big>
+                                <span class="purchase-button">Buy Now</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/Payment/Checkout?mh=50">
+                                <strong class="package-name">Standard</strong>
+                                <span class="purchase-description">50 MH/s </span>
+                                <span class="purchase-description">2-year contract </span>
+                                <span class="purchase-description">No service / maintenance fees</span>
+                                <span class="purchase-description">Payout every 24 hrs</span>
+                                <big class="purchase-price" id="price2">$1</big>
+                                <span class="purchase-button">Buy Now</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/Payment/Checkout?mh=100">
+                                <strong class="package-name">Advanced</strong>
+                                <span class="purchase-description">100 MH/s</span>
+                                <span class="purchase-description">2-year contract</span>
+                                <span class="purchase-description">No service / maintenance fees</span>
+                                <span class="purchase-description">Payout every 24 hrs</span>
+                                <big class="purchase-price" id="price3">$1</big>
+                                <span class="purchase-button">Buy Now</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div id="services" class="text-center">
+
+            <div class="container" style=" background: rgba(255,255,255,0.85); width:90%; box-shadow:rgba(255,255,255,0.85) 0 0 0px 5px; padding-top:5em; ">
+                <div class="col-md-10 col-md-offset-1 section-title">
+                    <h2>BNetwork Benefits</h2>
+                    <hr>
+                    <p>Making sure you only get the best</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <i class="fa fa-battery-full"></i>
+                        <h4>Always Got Juice</h4>
+                        <p>Your MH/s will always be working at a consistent rate <br /> unless the warehouse burns down or something</p>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <i class="fa fa-hand-holding-usd"></i>
+                        <h4>Profitability matters</h4>
+                        <p>Your rig will be using the most advanced mining <br /> algorithms to ensure you are always making money</p>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <i class="fa fa-calendar-alt"></i>
+                        <h4>DAILY WITHDRAWLS</h4>
+                        <p>We know that you want immediate access to your  <br /> earnings. With BNetwork you can withdraw every day</p>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <i class="fa fa-desktop"></i>
+                        <h4>Live statistics </h4>
+                        <p>Your mining progress should be transparent<br /> BNetwork offers unique rig monitoring at real-time </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio Section -->
+        <div id="portfolio">
+            <div class="container" style="background:rgba(255,255,255, 0.85); width:90%;height:100%; box-shadow:rgba(255,255,255,0.85) 0 0 0px 5px; padding-top:5em; padding-bottom:5em;">
+                <div class="section-title text-center center">
+                    <h2>Gallery</h2>
+                    <hr>
+                    <p>Get a sneak-peak to our beautiful mining operation</p>
+                </div>
+
+                <div class="row">
+                    <div class="portfolio-items">
+                        <div class="col-sm-6 col-md-3 col-lg-3 lorem">
+                            <div class="portfolio-item">
+                                <div class="hover-bg">
+                                    <a href="~/images/portfolio/01-large.jpg" title="Project Title" data-lightbox-gallery="gallery1">
+                                        <div class="hover-text">
+                                            <h4>BNetwork Engineering</h4>
+                                        </div>
+                                        <img src="~/images/portfolio/01-large.jpg" class="img-responsive" alt="Project Title">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 col-lg-3 adipiscing">
+                            <div class="portfolio-item">
+                                <div class="hover-bg">
+                                    <a href="~/images/portfolio/02-large.jpg" title="Project Title" data-lightbox-gallery="gallery1">
+                                        <div class="hover-text">
+                                            <h4>Live Monitoring</h4>
+                                        </div>
+                                        <img src="~/images/portfolio/02-large.jpg" class="img-responsive" alt="Project Title">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 col-lg-3 lorem">
+                            <div class="portfolio-item">
+                                <div class="hover-bg">
+                                    <a href="~/images/portfolio/03-large.jpg" title="Project Title" data-lightbox-gallery="gallery1">
+                                        <div class="hover-text">
+                                            <h4>Functionality-First Design</h4>
+                                        </div>
+                                        <img src="~/images/portfolio/03-large.jpg" class="img-responsive" alt="Project Title">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 col-lg-3 lorem">
+                            <div class="portfolio-item">
+                                <div class="hover-bg">
+                                    <a href="~/images/portfolio/04-large.jpg" title="Project Title" data-lightbox-gallery="gallery1">
+                                        <div class="hover-text">
+                                            <h4>Realiable Up-Time</h4>
+                                        </div>
+                                        <img src="~/images/portfolio/04-large.jpg" class="img-responsive" alt="Project Title">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 col-lg-3 adipiscing">
+                            <div class="portfolio-item">
+                                <div class="hover-bg">
+                                    <a href="~/images/portfolio/05-large.jpg" title="Project Title" data-lightbox-gallery="gallery1">
+                                        <div class="hover-text">
+                                            <h4>Most Profitable Hardware</h4>
+                                        </div>
+                                        <img src="~/images/portfolio/05-large.jpg" class="img-responsive" alt="Project Title">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Achievements Section -->
+        <!-- Testimonials Section -->
+
+    </div>
+
+    <script>
+        $(function () {
+            $("#front-text").typed({
+                strings: [" Cloudmining <br/> made easy."],
+                loop: true,
+                backDelay: 3000,
+                typeSpeed: 110,
+                showCursor: true,
+            });
+        });
+
+        $(document).ready(function () {
+
+
+            var vid = document.getElementById("video");
+            vid.playbackRate = 0.75;
+
+            var mhprice = $("#MegaHashPriceRate").val();
+            document.getElementById("price1").innerHTML = "$" + mhprice * 10;
+            document.getElementById("price2").innerHTML = "$" + mhprice * 50;
+            document.getElementById("price3").innerHTML = "$" + mhprice * 100;
+
+            $.get("https://www.etherchain.org/api/miningEstimator", function (data, status) {
+                $("#Difficulty").val(data.difficulty);
+                $("#BlockTime").val(data.blocktime);
+
+            });
+            $.get("https://min-api.cryptocompare.com/data/top/exchanges/full?fsym=ETH&tsym=USD", function (data, status) {
+
+                $("#BlockReward").val(data.Data.CoinInfo.BlockReward);
+                $("#ETHPrice").val(data.Data.AggregatedData.PRICE);
+
+
+            });
+
+
+
+        });
+
+
+
+        document.getElementById('checkoutButton').addEventListener('click', function (e) {
+
+            var url = "/Payment/Checkout?mh=" + parseInt($(".annual-label").text());
+            window.location.href = url;
+
+            e.preventDefault();
+        });
+    </script>
+
+</body>
+</html>
+<style>
+    #adjust-right {
+        background: url("/images/redgradient.jpg");
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+        -o-background-size: cover;
+    }
+
+    .buy-mh {
+        color: white;
+        text-shadow: 0 0 0.10em white;
+        font-weight: bold;
+        font-size: large;
+    }
+
+    #checkoutButton:hover .buy-mh {
+        color: red;
+        text-shadow: 0 0 0.20em rgba(204, 0, 0, 1);
+    }
+
+    #checkoutButton {
+    }
+
+        #checkoutButton:hover {
+        }
+
+    #mining-shop-button {
+        color: #ffffff;
+        text-shadow: 0 0 0.15em white;
+        text-decoration: none;
+    }
+</style>
+
+<script src="https://js.stripe.com/v3/"></script>

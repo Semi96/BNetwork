@@ -1,0 +1,141 @@
+﻿@model BnetworkManagement.Models.BusinessViewModels.MiningShopViewModel
+
+<!DOCTYPE html>
+
+<html class="mining-page" style="height:100%; ">
+
+<head>
+
+    @{
+        ViewData["Title"] = "Mining Shop";
+    }
+    <environment names="Production">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
+        <link rel="stylesheet" href="~/css/PriceRangeSlider.css" />
+        <script src="~/js/PriceRangeSlider.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
+
+
+
+    </environment>
+
+</head>
+
+
+<body>
+    <input id='MegaHashPriceRate' type='hidden' value='@Model.MegaHashPriceRate' />
+    <input id='MineableCurrencies' type='hidden' value='@Model.MineableCurrencies' />
+    <input id='TotalMegaHashAvailable' type='hidden' value='@Model.TotalMegaHashAvailable' />
+    <input id='BlockTime' type='hidden' value='0' />
+    <input id='Difficulty' type='hidden' value='0' />
+
+    <input id='BlockReward' type='hidden' value='0' />
+    <input id='ETHPrice' type='hidden' value='0' />
+
+    <div class="container col-md-12" style="width: inherit;">
+        <div class="sidenav col-sm-3">
+
+        </div>
+ 
+        <div class="col-sm-6">
+            <canvas id="myChart" width="400" height="400" style="background-color:darkgray; "></canvas>
+
+
+            <div id="range-div">
+                <div class="range-holder" id="range">
+
+                    <div id="pr-slider" class="dragdealer">
+
+                        <div class="stripe">
+
+                            <div class="handle">
+                                <div class="infobox">
+                                    <div class="titlebar"><span id="plan-holder"></span> <span id="device-holder"></span></div>
+                                    <div class="innerbox">
+
+                                        <div class="info-price"></div>
+                                        <div class="annual-label"></div>
+                                        <div class="contract-price"></div>
+
+
+                                    </div>
+                                </div>
+                                <div class="square">
+
+                                    <img src="~/images/black-gear.png" alt="testimage" class="img-responsive" style=" width:5em;height:auto;  margin-right:0.5em" />
+
+                                    <span class="value"></span>
+                                    <span class="menu-line"></span>
+                                    <span class="menu-line"></span>
+                                    <span class="menu-line"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-3" style="width:30em;top:10em;">
+
+
+
+
+
+            <button id="checkoutButton">Checkout</button>
+            <script src="~/js/Chart.js"></script>
+            <script src="https://checkout.stripe.com/checkout.js"></script>
+            <script>
+                $(document).ready(function () {
+       
+                    $.get("https://www.etherchain.org/api/miningEstimator", function (data, status) {
+                        $("#Difficulty").val(data.difficulty);
+                        $("#BlockTime").val(data.blocktime) ;
+              
+                    });
+                    $.get("https://min-api.cryptocompare.com/data/top/exchanges/full?fsym=ETH&tsym=USD", function (data, status) {
+               
+                        $("#BlockReward").val(data.Data.CoinInfo.BlockReward);
+                        $("#ETHPrice").val(data.Data.AggregatedData.PRICE);
+    
+
+                    });
+
+
+
+                });
+
+
+
+                document.getElementById('checkoutButton').addEventListener('click', function (e) {
+
+                    var url = "/Payment/Checkout?mh=" + parseInt($(".annual-label").text());
+                    window.location.href = url;
+
+                    e.preventDefault();
+                });
+            </script>
+
+            <script src="https://js.stripe.com/v3/"></script>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+<style>
+    /**
+    * The CSS shown here will not be introduced in the Quickstart guide, but shows
+    * how you can use CSS to style your Element's container.
+    */
+   
+</style>
+

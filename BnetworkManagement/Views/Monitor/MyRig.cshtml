@@ -1,0 +1,506 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+        
+        <link rel="stylesheet" type="text/css" href="~/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="~/css/MyRig.css">
+        <link rel="stylesheet" href="~/css/Sidebar.css" />
+        <link href="//cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+
+    <div class="modal fade" id="modal-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="position:static">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirm Submit
+                </div>
+                <div class="modal-body">
+                    Current Balance: <span class="currentBalance"></span> ETH <br />
+                    Withdrawal Requested: <span id="withdrawRequest"></span> ETH <br />
+                    New Balance: <span id="newBalance"></span> ETH <br />
+                    Send To Wallet Address: <span id="userWallet"></span><br />
+                    <br />
+                    Do You Confirm This Withdraw Request?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="CloseModal" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a href="#" id="Withdraw" class="btn btn-success success">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="rig-background">
+        <div class="page-content" style="margin-top:-2.2em;     margin-left: 0em;">
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="row" style="padding-top: 2em !important;">
+
+
+                        <div class="col-md-6 col-md-offset-3">
+
+                            <div class="content-box-large" style="height:auto;">
+                                <div class="panel-heading">
+                                    <div class="panel-title">My Rig:</div>
+                                </div>
+                                <br />
+                                <br />
+                                <div id="alert_placeholder_rig"></div>
+                                <div id="alert_placeholder0"></div>
+                                <div id="alert_placeholder1"></div>
+                                <div id="alert_placeholder2"></div>
+                                <div id="alert_placeholder3"></div>
+                                <div id="alert_placeholder4"></div>
+                                <div id="alert_placeholder5"></div>
+                                <div id="alert_placeholder6"></div>
+                                <div id="alert_placeholder7"></div>
+                                <div id="alert_placeholder8"></div>
+                                <div id="alert_placeholder9"></div>
+                                <div id="alert_placeholder10"></div>
+                                <div id="alert_placeholder11"></div>
+                                <div id="alert_placeholder12"></div>
+                                <div id="alert_placeholder13"></div>
+                                <div id="alert_placeholder14"></div>
+                                <div id="alert_placeholder15"></div>
+                                <div id="alert_placeholder16"></div>
+                                <div id="alert_placeholder17"></div>
+                                <div id="alert_placeholder18"></div>
+                                <div id="alert_placeholder19"></div>
+                                <div id="alert_placeholder20"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="">
+
+
+                        <div class="col-md-8 col-md-offset-2">
+
+                            <div class="content-box-large" style="min-width:20em;">
+
+                                <div class="chartHolder" style="width:100%; min-height:10em; position:relative; margin:auto">
+
+                                    <canvas id="accreditationChart" style="background-color:rgba(0, 0, 0, 0); max-height:30em;max-width: 50em;width:auto; min-height:15em;position:relative; margin:auto;"></canvas>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="content-box-large" style="height:auto;min-height:35em">
+                                <div class="panel-heading">
+
+
+                                    <div class="panel-title">Withdraw Ethereum:</div>
+
+
+                                </div>
+                                <div class="panel-body" align-content:center;>
+
+                                    <p>
+                                        -MAKE SURE YOUR WALLET INFORMATION IS CORRECT <br />
+                                        -GAS fees for sending ETH over the network will be automatically deducted during the transaction <br />
+                                        -You can withdraw only one time every 24 HRS! <br />
+                                        -Transactions can take a few minutes so please be patient <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <hr />
+
+                                        Balance:  <span class="currentBalance"></span> ETH
+                                        <br />
+                                        <br />
+                                        <input type="checkbox" onchange="document.getElementById('OpenModal').disabled = !this.checked;" />  I confirm that my wallet information is correct. All withdraws are final and non-refundable.
+                                    </p>
+
+                                    <div class="form-group" style="position:relative; margin:auto; align-content:center; text-align:center;">
+                                        <br />
+                                        <br />
+                                        <input id="WithdrawRequest" name="WithdrawRequest" maxlength="10" placeholder="Ethereum Amount">
+
+                                        <input type="submit" value="Withdraw" id="OpenModal" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="content-box-large" style="min-height:35em;min-width:10em">
+                                <div class="panel-heading">
+                                    <div class="panel-title">Contract Purchases</div>
+
+
+                                </div>
+                                <div class="panel-body">
+                                    <table id="contracts" class="display" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>MHAmount</th>
+                                                <th>PurchaseDate</th>
+                                                <th>Currency</th>
+                                                <th>Mining Status</th>
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="content-box-large" style="min-height:35em;min-width:10em">
+                                <div class="panel-heading">
+                                    <div class="panel-title">Accreditation History</div>
+                                </div>
+                                <div class="panel-body">
+
+                                    <table id="accreditations" class="display" style="width:100%; height:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>CryptoMined</th>
+                                                <th>Date</th>
+                                                <th>Currency</th>
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="content-box-large" style="min-height:35em;min-width:10em">
+                                <div class="panel-heading">
+                                    <div class="panel-title">Withdraw Request History</div>
+                                </div>
+                                <div class="panel-body">
+
+                                    <table id="withdraws" class="display" style="width:100%; height:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>CryptoRequest</th>
+                                                <th>Date</th>
+                                                <th>Currency</th>
+
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer style=" margin-left: -0.4em;">
+        <div class="container">
+
+            <div class="copy text-center">
+                <p>Copyright &copy; 2018 BNetwork </p>
+            </div>
+
+        </div>
+    </footer>
+
+</body>
+</html>
+
+
+
+
+
+<script>
+    //populate messages
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Monitor/GetMessages',
+            type: 'post',
+            dataType: 'json',
+            async: false,
+            success: function (json) {
+
+                for (var i = 0; i < json.data.length; i++) {
+                    $('#alert_placeholder' + i + '').html('<div  class="alert alert-danger alert-dismissible"><a href = "#" class= "close" data-dismiss="alert" aria-label="close" >x</a > ' + json.data[i].messageString + '.</div >');
+                }
+            },
+            error: function () {
+
+            }
+
+        });
+
+        $.ajax({
+            url: '/Monitor/HiveOs',
+            type: 'post',
+            dataType: 'json',
+            async: false,
+            success: function (json) {
+                var data = json;
+                $('#alert_placeholder_rig').html('<div  class="alert alert-danger alert-dismissible" style="background:lightgrey;border-color:lightgrey"> Average GPU Fan Speed: <span style="color:green"> ' + data.averageGpuFanSpeed + '</span><br/> Average GPU Temperature: <span style="color:green">  ' + data.averageGpuTemp + '</span></div >');
+
+            }
+        });
+
+    });
+
+
+    jQuery.extend({
+        getValues: function (url) {
+            var result = null;
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    result = data.data;
+                }
+            });
+            return result;
+        }
+    });
+
+    document.getElementById('OpenModal').addEventListener('click', function (e) {
+        var amount = $("#WithdrawRequest").val();
+        document.getElementById("withdrawRequest").innerHTML = amount;
+        var newBalance = currentBalance - amount;
+        document.getElementById("newBalance").innerHTML = newBalance;
+        var userWallet = $.getValues('/Monitor/GetUserWalletAsync');
+        document.getElementById("userWallet").innerHTML = userWallet;
+
+        $("#modal-popup").modal("show");
+
+    });
+
+    var currentBalance = 0;
+
+
+    document.getElementById('Withdraw').addEventListener('click', function (e) {
+        $("#modal-popup").modal("hide");
+        var amount = $("#WithdrawRequest").val();
+        var currency = 0;
+
+        $.ajax({
+            type: "POST",
+            url: '/Payment/RequestWithdraw',
+            dataType: 'json',
+            data: { requestAmount: amount, currency: currency },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.responseText);
+                }
+                else {
+                    alert(response.responseText);
+                }
+            },
+
+            error: function (ex) {
+                alert("Transaction Unsuccesful, try again");
+            }
+        })
+
+    });
+
+    function RequestWithdraw(amount, currency) {
+        $.ajax({
+            type: "POST",
+            url: '/Payment/RequestWithdraw',
+            dataType: 'json',
+            data: { requestAmount: amount, currency: currency },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.responseText);
+                }
+                else {
+                    alert(response.responseText);
+                }
+            },
+
+            error: function (ex) {
+                alert("Transaction Unsuccesful, try again");
+            }
+
+            //}).done(function () {
+            //    alert('Added');
+        });
+    }
+
+
+
+
+    $.fn.dataTable.ext.errMode = 'none';
+    $(document).ready(function () {
+        var contracts_table = $("#contracts").DataTable({
+            'ajax': {
+                "type": "POST",
+                "url": '/Monitor/GetTransactionsAsync',
+                "dataSrc": function (json) {
+                    var return_data = new Array();
+
+                    for (var i = 0; i < json.data.length; i++) {
+
+
+                        return_data.push({
+                            'MHAmount': json.data[i].mhAmount,
+                            'PurchaseDate': json.data[i].purchaseDate,
+                            'Currency': json.data[i].currency,
+                            'miningStatus': json.data[i].miningStatus
+                        })
+                    }
+                    return return_data;
+                }
+            },
+            "aLengthMenu": [5],
+            "iDisplayLength": [5],
+            "scrollX": "true",
+            "pageLength": 5,
+            "scrollY": "true",
+
+            "columns": [
+                {
+                    'data': 'MHAmount',
+                },
+                { "data": "PurchaseDate" },
+                { "data": "Currency" },
+                { "data": "miningStatus" },
+            ],
+
+
+            'rowCallback': function (row, data, index) {
+
+                if (data.miningStatus.toUpperCase() == "WAITING") {
+                    $(row).find('td:eq(3)').css('background', 'yellow');
+                } else if (data.miningStatus.toUpperCase() == "PENDING") {
+                    $(row).find('td:eq(3)').css('background', 'orange');
+                } else if (data.miningStatus.toUpperCase() == "MINING") {
+                    $(row).find('td:eq(3)').css('background', 'green');
+                } else if (data.miningStatus.toUpperCase() == "STOPPEDMINING") {
+                    $(row).find('td:eq(3)').css('background', 'red');
+                }
+
+            }
+        });
+        var allAccreditations = [0];
+        var accreditationDates = [0];
+        var accreditations_table = $("#accreditations").DataTable({
+            'ajax': {
+                "type": "POST",
+                "url": '/Monitor/GetAccreditationsAsync',
+                "dataSrc": function (json) {
+                    var return_data = new Array();
+
+                    for (var i = 0; i < json.data.length; i++) {
+                        allAccreditations[i] = json.data[i].cryptoMined;
+                        accreditationDates[i] = json.data[i].dateShort;
+                        currentBalance += json.data[i].cryptoMined;
+
+                        return_data.push({
+                            'date': json.data[i].date,
+                            'CryptoMined': json.data[i].cryptoMined,
+                            'Currency': json.data[i].currency,
+                        })
+                    }
+                    $(".currentBalance").text(currentBalance);
+                    drawChart(accreditationDates, allAccreditations);
+                    return return_data;
+                }
+            },
+            "aLengthMenu": [5],
+            "iDisplayLength": [5],
+            "scrollX": "true",
+            "scrollY": "true",
+            "scrollCollapse": "true",
+            "paging": "false",
+            "pageLength": 5,
+
+            "columns": [
+                { "data": "CryptoMined" },
+                { "data": "date" },
+                { "data": "Currency" },
+            ],
+
+        });
+
+        var withdraws_table = $("#withdraws").DataTable({
+            'ajax': {
+                "type": "POST",
+                "url": '/Monitor/GetWithdrawsAsync',
+                "dataSrc": function (json) {
+                    var return_data = new Array();
+
+                    for (var i = 0; i < json.data.length; i++) {
+
+                        currentBalance -= json.data[i].cryptoDelivered;
+                        console.log(currentBalance);
+                        return_data.push({
+                            'cryptoDelivered': json.data[i].cryptoDelivered,
+                            'date': json.data[i].date,
+                            'Currency': json.data[i].currency,
+                        })
+                    }
+                    $(".currentBalance").text(currentBalance);
+                    return return_data;
+                }
+            },
+            "aLengthMenu": [5],
+            "iDisplayLength": [5],
+            "scrollX": "true",
+            "scrollY": "true",
+            "scrollCollapse": "true",
+            "paging": "false",
+            "pageLength": 5,
+
+            "columns": [
+                { "data": "cryptoDelivered" },
+                { "data": "date" },
+                { "data": "Currency" },
+            ],
+
+        });
+
+    });
+
+
+
+
+
+
+</script>
+
+<script src="~/js/AccreditationChart.js"></script>
+<style>
+    #rig-background {
+        margin-left: -0.5em;
+        background: url("/images/redgradient.jpg");
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+        -o-background-size: cover;
+    }
+
+    #my-rig-button {
+        color: #ffffff;
+        text-shadow: 0 0 0.15em white;
+        text-decoration: none;
+    }
+</style>

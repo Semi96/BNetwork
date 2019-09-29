@@ -1,0 +1,29 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "RegisterComplete";
+}
+<environment names="Production">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</environment>
+
+
+
+<div class="row" style="padding-left:10vw;padding-right:10vw; position:relative; margin:auto;">
+    <div class="jumbotron text-xs-center" style="align-content:center;margin-top:10em">
+        <h1  style="position:relative;margin:auto; text-align:center">Thank You!</h1>
+        <p class="lead" style="text-align:center; margin-top:2em; margin-bottom:2em"><strong>Please check your email</strong> for account verification to complete your registration.</p>
+        <hr>
+        
+        <div style="text-align:center; margin-top:3em">
+            <button style="position:relative; margin:auto; text-align:center;"  onclick="location.href = '/Home/MiningShop';"  >Continue to homepage</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

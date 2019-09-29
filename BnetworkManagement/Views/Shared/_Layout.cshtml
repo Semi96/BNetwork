@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  
+    <environment names="Production">
+        <link rel="icon" type="image/x-icon" href="~/black-icon.png">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        @{
+            if (ViewBag.IsLandingPage == null)
+            {
+
+                <link rel="stylesheet" href="/css/Sidebar.css" />
+            }
+        }
+        <link rel="stylesheet" href="/css/site.css" />
+
+        <link rel="stylesheet" type="text/css" href="~/css/fontawesome-free-5.0.13//web-fonts-with-css/css/fontawesome-all.css">
+
+        <link rel="stylesheet" href="~/css/layout.css" />
+
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,400italic'>
+        <link rel="stylesheet" type="text/css" href="~/css/bootstrap.min.css">
+
+
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+    </environment>
+   
+</head>
+<body>
+
+
+    <div class="container col-md-12" style="position:static;width:100%;height:100%;margin:0 0 0 0; padding:0 0 0 0;background-color:#e9e9e9 ;background-size:cover;">
+        <div>
+            @*  SiderBar *@
+
+            <div class="sidenav col-md-3 " id="sidenav" style="background-color:black;overflow-y:auto; z-index:9999; overflow:auto">
+
+                <div> <img src="~/images/BNetwork-black.png" alt="testimage" class="img-responsive" style="align-content:center;margin-top:2em;" onclick="imageRedirect()"> </div>
+                <div id="collapse-button" class="collapse-button " style="" onclick="collapseSidebar()"><i class="sidebar-icon glyphicon glyphicon-arrow-up"></i>Sidebar  </div>
+                <div id="loginpartial"> @await Html.PartialAsync("_LoginPartial")</div>
+
+                <a asp-area="" asp-controller="Home" asp-action="HomePage" class="siderbar-button" id="home-button"><i class="fas fa-home"></i>  Home</a>
+                <a asp-area="" asp-controller="Home" asp-action="MiningShop" class="siderbar-button" id="mining-shop-button"><i class="fas fa-shopping-cart"></i>  Mining Shop</a>
+                <a asp-area="" asp-controller="Home" asp-action="AboutUs" class="siderbar-button" id="about-us-button"><i class="fas fa-users"></i>  About Us</a>
+                <a asp-area="" asp-controller="Monitor" asp-action="MyRig" class="siderbar-button" id="my-rig-button"><i class="fas fa-desktop"></i>  My Rig</a>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" class="siderbar-button" id="settings-button"><i class="fas fa-wrench"></i>  Settings</a>
+                <a asp-area="" asp-controller="Home" asp-action="Help" class="siderbar-button" id="help-button"><i class="fas fa-question"></i>  Help</a>
+                <a href="#" onclick="logOut()" class="siderbar-button" id="sign-out-button"><i class="fas fa-sign-out-alt"></i>  Sign Out</a>
+
+
+
+
+                <div class="copy text-center" style="position: absolute;
+    bottom: 0;">
+                    <p style="color:white">Copyright &copy; 2018 BNetwork </p>
+                </div>
+
+            </div>
+
+            @*  SiderBar End  *@
+            <div class="col-md-9" id="rest" style="">
+
+
+                @RenderBody()
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+
+</html>
+
+<script>
+    var OpenSidebar = true;
+    var forceCollapse = false;
+
+    $(window).resize(function (event) {
+
+        if ($(window).width() < 1000 && OpenSidebar) {
+
+            collapseSidebar();
+
+        }
+        else if ($(window).width() >= 1000 && !OpenSidebar && !forceCollapse) {
+
+            collapseSidebar();
+            //Add your javascript for small screens here
+        }
+    });
+    $(document).ready(function () {
+        if ($(window).width() < 1000 && OpenSidebar) {
+
+            collapseSidebar();
+
+        }
+        else if ($(window).width() >= 1000 && !OpenSidebar ) {
+
+             collapseSidebar();
+            //Add your javascript for small screens here
+        }
+
+    });
+
+    function imageRedirect() {
+   window.location.href = '@Url.Action("MiningShop", "Home")';
+
+    }
+
+
+
+    function collapseSidebar() {
+        if ($(window).width() >= 1000 && OpenSidebar) {
+            forceCollapse = true;
+        } else if ($(window).width() >= 1000 && !OpenSidebar && forceCollapse){
+            forceCollapse = false;
+
+        }
+        OpenSidebar = !OpenSidebar;
+        $('#collapse-button').toggleClass('active');
+        $('.sidebar-icon').toggleClass('glyphicon-arrow-up');
+        $('.sidebar-icon').toggleClass(' glyphicon-arrow-down');
+        $('#sidenav').toggleClass('active');
+    }
+
+    function logOut() {
+        $("#log-out-button").click();
+
+    }
+</script>
+<style>
+</style>

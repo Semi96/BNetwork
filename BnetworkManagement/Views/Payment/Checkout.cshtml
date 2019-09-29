@@ -1,0 +1,403 @@
+﻿@model BnetworkManagement.Models.BusinessViewModels.CheckoutViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</head>
+
+
+
+<body>
+
+
+    <div class="modal fade" id="modal-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="position:static">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirm Submit
+                </div>
+                <div class="modal-body">
+                    You have not specified a Wallet Public Key, and there is no Wallet associated with your account. <br /> You will still be accredited Currency from your contract without a Wallet, but withdrawals are disabled until one is registered. This can be done at any time. Do you want to continue?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="CloseModal" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a href="#" id="payNow" class="btn btn-success success">Submit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-popup-tax" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="position:static">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirm Submit
+                </div>
+                <div class="modal-body">
+                    Please Note: Your Registered Country of Residence is Canada. Complying with Canadian Tax Regulations, BNetwork must charge a 13% Sales Tax to all Mining Contracts. <br />
+                    If this information is inaccurate, you may change it by clicking here.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="dismissTaxModal" class="btn btn-default" data-dismiss="modal">Okay</button>
+                    @*<a href="#" id="payNow" class="btn btn-success success">Submit</a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*@if (Model.PurchaseTaxRate != 0)
+    {
+        //show tax notice modal
+        <button type="button" style="visibility:hidden" value="showTaxModal" onClick="$('#showTaxModal').click()"> </button>
+
+    }*@
+
+    <div class="container" style="margin-top:5em">
+        <div class="row">
+            <div class="well-lg">
+                <div class="row">
+                    <div class="col-xs-6 ">
+                        <address>
+                            <strong>BlockNetwork Inc</strong>
+                            <br />
+                            200 Matheson Blvd W
+                            <br />
+                            Mississauga, ON L5R 3L7
+                            <br />
+                            <abbr title="Phone">P:</abbr> (123) 456-7890
+                        </address>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="text-right">
+                            <em>Date: @DateTime.Today.ToShortDateString()</em>
+                        </p>
+                        <p class="text-right">
+                            <em>  @UserManager.GetUserName(User)</em>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="text-center">
+                        <h1>Summary</h1>
+                    </div>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Contract</th>
+                                <th>Rate</th>
+                                <th class="text-center">MH/s</th>
+                                <th class="text-center">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-md-9"><em>2-Year @Model.Cryptocurrency Mining Contract</em></td>
+                                <td class="col-md-1" style="text-align: center"> @Model.MegaHashPriceRate </td>
+                                <td class="col-md-1 text-center">@Model.MegaHashPurchased</td>
+                                <td class="col-md-1 text-center">$ @Model.NoTaxPurchasePrice</td>
+                            </tr>
+
+                            <tr>
+                                <td>   </td>
+                                <td>   </td>
+                                <td class="text-right">
+                                    <p>
+                                        <strong>Subtotal: </strong>
+                                    </p>
+                                    <p>
+                                        <strong>Tax (HST): </strong>
+                                    </p>
+                                </td>
+                                <td class="text-center">
+                                    <p>
+                                        <strong>$ @Model.NoTaxPurchasePrice</strong>
+                                    </p>
+                                    <p>
+                                        <strong>$ @Model.NetPurchaseTax</strong>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>   </td>
+                                <td>   </td>
+                                <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                <td class="text-center text-danger"><h4><strong>$ @Model.TotalPurchasePrice</strong></h4></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <form>
+                        @if (Model.PurchaseTaxRate != 0)
+                        {
+                            //show tax notice modal
+                            //<button type="button" style="visibility:hidden" value="showTaxModal" onClick="$('#showTaxModal').click()"> </button>
+                            <p>
+                                <b>
+                                    **PLEASE NOTE: Your Registered Country of Residence is Canada. <br />
+                                    Complying with Canadian Tax Regulations, BNetwork must charge a 13% Sales Tax to all Mining Contracts. <br />
+                                    If this information is inaccurate, you may change it by visiting Settings/My Details.
+                                </b>
+                            </p>
+                        }
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @if (Model.DiscountApplied == true)
+                        {
+                            <div class="form-group">
+                                <label asp-for="DiscountCode" class="control-label"></label>
+                                <input asp-for="DiscountCode" class="form-control" maxlength="100" readonly />
+                                <span asp-validation-for="DiscountCode" class="text-danger"></span>
+                                <button type="button" onclick="removeDiscount()">Remove Discount</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="DiscountCode" class="control-label"></label>
+                                <input asp-for="DiscountCode" class="form-control" maxlength="100" />
+                                <span asp-validation-for="DiscountCode" class="text-danger"></span>
+                                <button type="button" onclick="redirectDiscount()">Apply Discount</button>
+                            </div>
+                        }
+                        @if (Model.WalletPublicKey != null)
+                        {
+                            <div class="form-group">
+                                <label asp-for="WalletPublicKey" class="control-label"></label>
+                                <input asp-for="WalletPublicKey" class="form-control" readonly />
+                                <span asp-validation-for="WalletPublicKey" class="text-danger"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="WalletPublicKey" class="control-label"></label>
+                                <input asp-for="WalletPublicKey" class="form-control" maxlength="100" />
+                                <span asp-validation-for="WalletPublicKey" class="text-danger"></span>
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label asp-for="Cryptocurrency" class="control-label"></label>
+                            <input asp-for="Cryptocurrency" class="form-control" readonly />
+                            <span asp-validation-for="Cryptocurrency" class="text-danger"></span>
+                        </div>
+                    </form>
+                    <br />
+                    <hr />
+                    <input type="checkbox" onchange="document.getElementById('Proceed').disabled = !this.checked;" /> I confirm that I have read and agree with the <a href="~/Home/Agreement" target="_blank">User Agreements</a>
+                    <br /><br />
+                    <p style="background:lightgray; border-radius:5px; padding: 5px 0.5px 5px 5px">Pressing "Pay Now" will pop-up a 3rd-party payment application. The payment process and following charges are handled by Stripe. BNetwork is not responsible for any user information that is used during Stripe's payment process</p>
+                    <button type="button" class="btn btn-success btn-lg btn-block" style="background: rgb(204,0,0); border-color:rgb(204,0,0)" id="Proceed" disabled>
+                        Pay Now
+                    </button>
+
+                    <button type="button" class="btn btn-success btn-lg btn-block" id="payNow" style="visibility:hidden">Pay Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="spinner">
+        <i class="fas fa-3x fa-cog fa-spin"></i>
+        Loading...
+    </div>
+</body>
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+    var Ethereum;
+    var Bitcoin;
+    var Monero;
+
+
+    var handler = StripeCheckout.configure({
+        key: '',
+        image: '/images/BNetwork-black-logo.png',
+        billingAddress: 'true',
+        locale: 'auto',
+        currency: 'usd',
+
+
+
+        token: function (token, args) {
+            showProgress();
+            var discountCode = $("#DiscountCode").val();
+            var vmodel = {
+                MegaHashPurchased: @Model.MegaHashPurchased ,
+                MegaHashPriceRate: @Model.MegaHashPriceRate,
+                DiscountCode: discountCode,
+                tokenId: token.id,
+                PurchaseTaxRate: @Model.PurchaseTaxRate,
+                Currency: @Model.Cryptocurrency ,
+                TotalPurchasePrice: @Model.TotalPurchasePrice,
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Charge","Payment")',
+                data: { walletKey: $("#WalletPublicKey").val(), stripeToken: token.id, stripeEmail: token.email, model :vmodel },
+                success: function (result) {
+                    if (result.success) {
+                    hideProgress();
+                    var url = "/Payment/CheckoutComplete";
+                    window.location.href = url;
+                    e.preventDefault();
+                    }
+                    else {
+                        hideProgress();
+                        alert("Transaction Unsuccesful, try again");
+
+                    }
+                },
+                error: function (xmlhttprequest, textstatus, errorthrown) {
+                    hideProgress();
+                    alert("Transaction Unsuccesful, try again");
+                }
+            });
+
+
+
+        }
+    });
+
+    function removeDiscount() {
+            var url = "?mh="+ @Model.MegaHashPurchased;
+            window.location.href = url;
+    }
+
+
+
+    function redirectDiscount() {
+        var discount = $("#DiscountCode").val();
+
+        var url = "?mh="+ @Model.MegaHashPurchased + "&discount=" + discount;
+        window.location.href = url;
+    }
+
+
+
+    //document.getElementById('dismissTaxModal').addEventListener('click', function (e) {
+    //    $("#modal-popup-tax").modal("hide");
+    //});
+
+
+    @*document.getElementById('applyDiscount').addEventListener('click', function (e) {
+        var discountCode = $("#DiscountCode").val();
+        var model = {
+                MegaHashPurchased: @Model.MegaHashPurchased,
+                MegaHashPriceRate: @Model.MegaHashPriceRate,
+                DiscountCode: discountCode,
+                PurchaseTaxRate: @Model.PurchaseTaxRate,
+                Currency: @Model.Cryptocurrency ,
+                TotalPurchasePrice: @Model.TotalPurchasePrice,
+            };
+        if (discountCode == "" || discountCode == null)
+        {
+        }
+        else
+        {
+            ApplyDiscount(discountCode, model);
+        }
+    });
+
+    function ApplyDiscount(discountCode, model) {
+        $.ajax({
+            type: "POST",
+            url: '/Payment/ApplyDiscount',
+            dataType: 'json',
+            data: { discountCode: discountCode, model: model },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.responseText);
+                }
+                else {
+                    alert(response.responseText);
+                }
+            },
+
+            error: function () {
+                alert("Transaction Unsuccesful, try again");
+            }
+
+            //}).done(function () {
+            //    alert('Added');
+        });
+    }*@
+
+    document.getElementById('Proceed').addEventListener('click', function (e) {
+        var walletPK = $("#WalletPublicKey").val();
+
+        if (walletPK == "" || walletPK == null)
+        {
+            $("#modal-popup").modal("show");
+        }
+        else
+        {
+            document.getElementById('payNow').click();
+            //$("#payNow").click();
+        }
+    });
+
+    document.getElementById('payNow').addEventListener('click', function (e) {
+
+        $("#modal-popup").modal("hide");
+        var amount = @Model.TotalPurchasePrice * 100;
+
+        // Open Checkout with further options:
+        handler.open({
+            name: 'BNetwork',
+            description: 'Mining Contract',
+            currency: 'usd',
+            amount: amount
+
+
+        });
+        e.preventDefault();
+    });
+
+    // Close Checkout on page navigation:
+    window.addEventListener('popstate', function () {
+        handler.close();
+    });
+
+
+</script>
+
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+    /**
+    * The CSS shown here will not be introduced in the Quickstart guide, but shows
+    * how you can use CSS to style your Element's container.
+    */
+    .StripeElement {
+        background-color: white;
+        height: 40px;
+        padding: 10px 12px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+</style>
+

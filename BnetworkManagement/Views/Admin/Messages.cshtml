@@ -1,0 +1,234 @@
+﻿
+@{
+    ViewData["Title"] = "Messages";
+}
+
+<html>
+<head>
+    <environment names="Production">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    </environment>
+</head>
+<body style="background:rgb(241, 241, 241)">
+   
+    <button onclick="editMessage(null)" style="position:relative;margin:auto;left: 43%; margin-top:3em">Add New Message</button>
+    <h2 style="padding-left:10vw;padding-right:10vw;">Messages</h2>
+
+
+
+    <div class="row" style="padding-left:10vw;padding-right:10vw;">
+
+        <table id="messages" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>MessageId</th>
+                    <th>MessageString</th>
+                    <th>Status</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>PostedBy</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+        </table>
+
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Message Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="addMessage" method="post" action="/Admin/updateMessage"
+                          enctype="application/x-www-form-urlencoded">
+                        <div>
+                            <label for="MessageId">MessageId</label>
+                        </div>
+                        <div>
+                            <input id="messageId" name="MessageId" type="text" readonly />
+                        </div>
+                        <div>
+                            <label for="MessageString">MessageString</label>
+                        </div>
+                        <div>
+                            <input id="messageString" name="MessageString" type="text" />
+                        </div>
+                        <div>
+                            <label for="Status">Status</label>
+                        </div>
+                        <div>
+                            <input id="status" name="Status" type="text" /> <p> 0 = waiting, 1 = posted, 2 = archived</p>
+                        </div>
+                        <div>
+                            <label for="StartDate">StartDate</label>
+                        </div>
+                        <div>
+                            <input id="startDate" name="StartDate" type="datetime-local" />
+                        </div>
+                        <div>
+                            <label for="EndDate">EndDate</label>
+                        </div>
+                        <div>
+                            <input id="endDate" name="EndDate" type="datetime-local" />
+                        </div>
+                        <div>
+                            <label for="PostedBy">PostedBy</label>
+                        </div>
+                        <div>
+                            <input id="postedBy" name="PostedBy" type="text" />
+                        </div>
+                        <div>
+                            <input type="submit" value="Submit" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script>
+
+
+
+    var editor; // use a global for the submit and return data rendering in the examples
+
+    $(document).ready(function () {
+
+        var table = $("#messages").dataTable({
+            'ajax': {
+                "type": "POST",
+                "url": '/Admin/getMessages',
+                "dataSrc": function (json) {
+                    var return_data = new Array();
+
+                    for (var i = 0; i < json.data.length; i++) {
+
+
+                        return_data.push({
+                            'MessageId': json.data[i].messageId,
+                            'MessageString': json.data[i].messageString,
+                            'Status': json.data[i].status,
+                            'StartDate': json.data[i].startDate,
+                            'EndDate': json.data[i].endDate,
+                            'PostedBy': json.data[i].postedBy,
+
+                        })
+                    }
+                    return return_data;
+                },
+            }, "aLengthMenu": [10],
+            "iDisplayLength": [10],
+            "scrollX": "true",
+            "pageLength": 10,
+            "scrollY": "true",
+            "columns": [
+                { 'data': 'MessageId' },
+                { 'data': 'MessageString' },
+                { "data": "Status" },
+                { "data": "StartDate" },
+                { "data": "EndDate" },
+                { "data": "PostedBy" },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+
+
+                        return '<button onClick="editMessage(' + data.MessageId + ');"> Edit </button>';
+
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+
+
+                        return '<button onClick="removeMessage(' + data.MessageId + ');"> Remove </button>';
+
+                    }
+                },
+            ],
+
+
+
+
+
+        });
+
+
+
+    });
+    $(".modal").on("hidden.bs.modal", function () {
+        $(".modal-body #messageId").val('');
+        $(".modal-body #messageString").val('');
+        $(".modal-body #status").val('');
+        $(".modal-body #startDate").val('');
+        $(".modal-body #endDate").val('');
+        $(".modal-body #postedBy").val('');
+    });
+    function editMessage(messageId) {
+        $('#myModal').modal('show');
+        if (messageId != null) {
+
+
+
+
+            $.ajax({
+                url: '/admin/getOneMessage',
+                type: 'post',
+                data: { messageId },
+                dataType: 'json',
+                async: false,
+                success: function (json) {
+
+                    $(".modal-body #messageId").val(json.data[0].messageId);
+                    $(".modal-body #messageString").val(json.data[0].messageString);
+                    $(".modal-body #status").val(json.data[0].status);
+                    $(".modal-body #startDate").val(json.data[0].startDate);
+                    $(".modal-body #endDate").val(json.data[0].endDate);
+                    $(".modal-body #postedBy").val(json.data[0].postedBy);
+                },
+
+            });
+        }
+
+
+    }
+    function removeMessage(messageId) {
+
+        $.ajax({
+            url: '/admin/removeMessage',
+            type: 'post',
+            data: { messageId },
+            dataType: 'json',
+            async: false,
+            success: function (json) {
+                location.reload();
+            },
+            error: function () {
+
+                location.reload();
+            }
+
+        });
+    }
+</script>
+
+

@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<html>
+<head>
+    <environment names="Development">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+    </environment>
+</head>
+<body style="padding-left:5em;">
+    <h2>Admin Panel</h2>
+
+    <div>
+        <h4>View your administrative settings</h4>
+     
+        <div class="row">
+            <div class="col-md-3">
+                @await Html.PartialAsync("_AdminNav")
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+
+    @section Scripts {
+
+
+
+        @RenderSection("Scripts", required: false)
+
+    }
+</body>
+</html>
+<style>
+  
+</style>

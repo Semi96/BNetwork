@@ -1,0 +1,194 @@
+﻿@model BnetworkManagement.Extensions.PaginatedList<BnetworkManagement.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</head>
+<h2>Index</h2>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color col-md-3">
+
+
+        <select name="userStatus" asp-items="Html.GetEnumSelectList<UserStatus>()" class="form-control"></select>
+    </div>
+    <div class="form-actions no-color col-md-3">
+        <input type="submit" value="Search" class="btn btn-default" /> |
+        </p>
+    </div> <div class="form-actions no-color col-md-3">
+        <a asp-action="List">Back to Full List</a>
+    </div>
+</form>
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                FirstName
+            </th>
+            <th>
+                LastName
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                BirthDate
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                UserName
+            </th>
+
+            <th>
+                Email
+            </th>
+
+            <th>
+                EmailConfirmed
+            </th>
+
+            <th>
+                PhoneNumber
+            </th>
+
+
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div class="form-group">
+    <h2><br />Distribute Crypto to All Users <br /></h2>
+    Crypto Amount:<br /><input id="CryptoAmount" name="CryptoAmount"><br />
+    <input type="submit" value="DistributeCrypto" id="DistributeCrypto">
+</div>
+
+<div class="form-group">
+    <h2><br />Send Email to All Users <br /></h2>
+    Email Subject: <input class="form-control input-sm" id="emailSubject" name="emailSubject" type="text"><br />
+    Email Message: <textarea class="form-control input-sm" id="emailMessage" name="emailMessage" type="text" rows="5"></textarea>
+    <input type="submit" value="Send Emails" id="sendEmails" onclick ="sendEmails()">
+
+</div>
+
+<script>
+
+    function sendEmails() {
+        var subject = $("#emailSubject").val();
+        var message = $("#emailMessage").val();
+
+        $.ajax({
+            type: "POST",
+            url: '/Admin/SendUsersEmail',
+            dataType: 'json',
+            data: { subject: subject, message: message },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.responseText);
+                }
+                else {
+                    alert(response.responseText);
+                }
+            },
+            error: function () {
+                alert("Transaction Unsuccesful, try again");
+            }
+        })
+
+    };
+    // var amount = $("#CryptoAmount").val();
+
+    document.getElementById('DistributeCrypto').addEventListener('click', function (e) {
+        var amount = $("#CryptoAmount").val();
+        //function AccreditUserCrypto() {
+        $.ajax({
+            type: "POST",
+            url: '/Admin/AccreditUserCrypto',
+            dataType: 'json',
+            data: { CryptoReceived: amount },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.responseText);
+                }
+                else {
+                    alert(response.responseText);
+                }
+            },
+
+            error: function (ex) {
+                alert("Transaction Unsuccesful, try again");
+            }
+
+            //}).done(function () {
+            //    alert('Added');
+        })
+    });
+
+</script>
