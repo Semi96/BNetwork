@@ -26,7 +26,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="bootstrap" Version="4.1.1" />
+    <PackageReference Include="bootstrap" Version="4.3.1" />
     <PackageReference Include="Chart.js" Version="2.7.2" />
     <PackageReference Include="Chart.Mvc" Version="1.0.0.2" />
     <PackageReference Include="Coinbase.NetSDK" Version="1.2.1" />
